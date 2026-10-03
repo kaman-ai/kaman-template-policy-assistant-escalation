@@ -1,0 +1,60 @@
+{
+  "name": "Policy Assistant with Escalation",
+  "agents": {
+    "wording": "f26d5f06-885c-5a8f-bb1b-0e322dec9205",
+    "router": "a906c0cc-42ab-50d8-b128-d0e8abbc3175",
+    "assistant": "d6be3fbe-c17e-5852-9cf2-7c2a490c29b4"
+  },
+  "workflows": {
+    "esc_flow": "cda13f4d-8228-5cdf-a8ee-41d3491635f0"
+  },
+  "ui": {
+    "title": "Policy Assistant with Escalation",
+    "tagline": "An internal policy assistant that answers only from your policies, cites them, and knows when it cannot answer: a specialist checks the exact wording, and an attached workflow drafts what it can and routes the rest to the policy owner's queue.",
+    "actions": [
+      {
+        "id": "run",
+        "label": "Run: Escalate an unanswered question",
+        "description": "Called by the policy assistant when it cannot answer from the policies. Kaman drafts a best-effort answer, judges whether it is safe to send, and otherwise routes the question to the policy owner's queue.",
+        "kind": "workflow",
+        "target": "esc_flow",
+        "inputs": [
+          {
+            "name": "question",
+            "label": "Question",
+            "kind": "text",
+            "default": "Can I carry forward more than 10 days of unused leave if my manager agrees?"
+          },
+          {
+            "name": "asked_by",
+            "label": "Asked by",
+            "kind": "text",
+            "default": "employee@example.com"
+          },
+          {
+            "name": "context",
+            "label": "Context",
+            "kind": "text",
+            "default": "Policy found: carry-forward capped at 10 days; exceptions not mentioned."
+          }
+        ]
+      },
+      {
+        "id": "ask",
+        "label": "Ask the Policy Wording Checker",
+        "description": "Finds the exact policy clause for a question and quotes it.",
+        "kind": "agent",
+        "target": "wording",
+        "prompt": "{{question}}",
+        "inputs": [
+          {
+            "name": "question",
+            "label": "Your question",
+            "kind": "text",
+            "default": "Quote the remote-work clause from the handbook we uploaded."
+          }
+        ]
+      }
+    ]
+  }
+}
