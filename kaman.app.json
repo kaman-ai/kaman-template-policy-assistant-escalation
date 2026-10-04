@@ -1,60 +1,28 @@
 {
   "name": "Policy Assistant with Escalation",
   "agents": {
-    "wording": "f26d5f06-885c-5a8f-bb1b-0e322dec9205",
-    "router": "a906c0cc-42ab-50d8-b128-d0e8abbc3175",
-    "assistant": "d6be3fbe-c17e-5852-9cf2-7c2a490c29b4"
+    "wording": "45b9c21c-4c39-51c1-9a7f-c64b2384e66c",
+    "router": "c883865b-077e-5755-956a-6e344287dc72",
+    "assistant": "da0321f0-0884-5765-a038-f1813877446e"
   },
   "workflows": {
-    "esc_flow": "cda13f4d-8228-5cdf-a8ee-41d3491635f0"
+    "esc_flow": "72f80f5f-4e92-5a9f-9daf-94aa4e74f4ff"
+  },
+  "scenarios": {
+    "desk": "9fb925a4-6a3a-5eda-b517-d54321c4c656"
   },
   "ui": {
     "title": "Policy Assistant with Escalation",
     "tagline": "An internal policy assistant that answers only from your policies, cites them, and knows when it cannot answer: a specialist checks the exact wording, and an attached workflow drafts what it can and routes the rest to the policy owner's queue.",
-    "actions": [
-      {
-        "id": "run",
-        "label": "Run: Escalate an unanswered question",
-        "description": "Called by the policy assistant when it cannot answer from the policies. Kaman drafts a best-effort answer, judges whether it is safe to send, and otherwise routes the question to the policy owner's queue.",
-        "kind": "workflow",
-        "target": "esc_flow",
-        "inputs": [
-          {
-            "name": "question",
-            "label": "Question",
-            "kind": "text",
-            "default": "Can I carry forward more than 10 days of unused leave if my manager agrees?"
-          },
-          {
-            "name": "asked_by",
-            "label": "Asked by",
-            "kind": "text",
-            "default": "employee@example.com"
-          },
-          {
-            "name": "context",
-            "label": "Context",
-            "kind": "text",
-            "default": "Policy found: carry-forward capped at 10 days; exceptions not mentioned."
-          }
-        ]
-      },
-      {
-        "id": "ask",
-        "label": "Ask the Policy Wording Checker",
-        "description": "Finds the exact policy clause for a question and quotes it.",
-        "kind": "agent",
-        "target": "wording",
-        "prompt": "{{question}}",
-        "inputs": [
-          {
-            "name": "question",
-            "label": "Your question",
-            "kind": "text",
-            "default": "Quote the remote-work clause from the handbook we uploaded."
-          }
-        ]
-      }
-    ]
+    "run": "Run: Escalate an unanswered question",
+    "chat": {
+      "agent": "wording",
+      "title": "Ask the Policy Wording Checker",
+      "suggestions": [
+        "How many days of leave can I carry forward? Quote the clause.",
+        "Do the travel and expenses policies conflict on hotel limits?",
+        "Quote the remote-work clause from the handbook we uploaded."
+      ]
+    }
   }
 }
